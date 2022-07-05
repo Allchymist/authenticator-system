@@ -7,8 +7,9 @@ const UserSchema = new Schema({
   password: { type: String, require: true },
   first_name: { type: String, required: true },
   last_name: { type: String, require: true },
+  perms: { type: String, enum: ['user', 'admin'], default: 'user' },
   created_at: { type: String, require: true },
-  updated_at: { type: String, require: true }
+  updated_at: { type: String }
 });
 
 UserSchema.pre('save', async function (next) {

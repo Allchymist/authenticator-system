@@ -1,4 +1,5 @@
 const { compareSync } = require('bcrypt');
+const { sign } = require("jsonwebtoken");
 
 const { user } = require('../../database/index');
 
@@ -19,9 +20,13 @@ class AuthService {
     const comparePassword = compareSync(password, findUser.password);
     if (!comparePassword) throw new Error('invalid password');
 
+    const token = findUser.perms === 'user' ? null :
+      sign({ id: findUser._id }, process.env.PASSWORD_KEY, { expiresIn: '1d' });
+
     return {
       message: 'Successfully logged in',
-      user: findUser
+      user: findUser,
+      token
     }
     
   }

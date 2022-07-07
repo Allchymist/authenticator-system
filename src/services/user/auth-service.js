@@ -21,7 +21,7 @@ class AuthService {
     if (!comparePassword) throw new Error('invalid password');
 
     const token = findUser.perms === 'user' ? null :
-      sign({ id: findUser._id }, process.env.PASSWORD_KEY, { expiresIn: '1d' });
+      sign({ id: findUser.email }, process.env.PASSWORD_KEY, { expiresIn: '1d' });
 
     return {
       message: 'Successfully logged in',

@@ -1,6 +1,7 @@
 const { Request, Response } = require('express');
 
 const AuthService = require('../../services/user/auth-service');
+const Logs = require('../../utils/logs');
 
 class AuthController {
   /**
@@ -25,6 +26,13 @@ class AuthController {
 
     try {
       const data = await AuthService.execute(id, email, password);
+
+      Logs.SaveLog({
+        author: email,
+        action: 'Account Logged',
+        created_at: new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+      });
+
       return res.status(202).json(data);
     } catch (err) {
       console.error(err.message);
